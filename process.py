@@ -2,13 +2,13 @@
 
 import sys, os, shutil, multiprocessing, subprocess, json
 
-data_root = '/root/metadatacache'
+data_root = '/tmp/manifests'
 filter_string = '{arch: .architecture, digest: "sha256:%s", tag: .tag, name: .name, layers: [.fsLayers[].blobSum]}'\
                 ' + (.history[0].v1Compatibility | fromjson | { os: .os, created: .created, labels: .config.Labels })'
 
 def usage():
-        print(sys.argv[0], 'TARGET\n')
-        print(' Cache manifest metadata from TARGET directory')
+        print(sys.argv[0], 'SOURCE TARGET\n')
+        print(' Cache manifest metadata from SOURCE directory to TARGET')
         sys.exit(1)
 
 def ensure_directory(name):
@@ -26,25 +26,27 @@ def filter_jq(target):
         r = subprocess.check_output(['jq', filter_string % bp, target])
         data = json.loads(r)
         subpath = data['name']
+        del data['name']
         ensure_directory(subpath)
         fullpath = os.path.join(data_root, subpath, bp)
         with open(fullpath, 'w') as f:
-                f.write(r)
+                json.dump(data, f)
         return fullpath
 
 def filter_manual(target):
         pass
 
-if len(sys.argv) != 2:
+if len(sys.argv) != 3:
         usage()
 
-target, paths = sys.argv[1], []
+target, data_root, paths = sys.argv[1], sys.argv[2], []
 for r, _, files in os.walk(target):
         for fl in files:
                 paths.append(os.path.join(r, fl))
 
 pool = multiprocessing.Pool(32)
 manifest_map = filter(None, pool.map(filter_jq, paths))
-template = '\n'
-
-print(template.join(manifest_map))
+if not manifest_map:
+        sys.exit(1)
+### template = '\n'
+### print(template.join(manifest_map))

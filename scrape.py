@@ -25,7 +25,7 @@ def process_manifest(path, target):
                 ''' 
                 /docker/registry/v2/blobs/<sha256>/<DD>/<FFFFFFFFFFFFFFFFFFFF>/data
                 '''
-                digest = path.split('/')[-2]
+                digest = path.split('/')[-1] # -1 / -2
                 shutil.copy(path, os.path.join(target, digest))
                 return path
 
