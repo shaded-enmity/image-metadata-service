@@ -1,6 +1,6 @@
 #!/usr/bin/python -tt
 
-import sys, os, shutil, multiprocessing, subprocess, json
+import sys, os, multiprocessing, subprocess, json
 
 data_root = '/tmp/manifests'
 filter_string = '{arch: .architecture, digest: "sha256:%s", tag: .tag, name: .name, layers: [.fsLayers[].blobSum]}'\

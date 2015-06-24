@@ -1,6 +1,6 @@
 #!/usr/bin/python -tt
 
-import sys, os, json, shutil, multiprocessing, datetime
+import sys, os, json, datetime
 
 def usage():
         print(sys.argv[0], 'TARGET\n')

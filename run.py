@@ -1,6 +1,6 @@
 #!/usr/bin/python -tt
 
-import sys, os, multiprocessing, subprocess, tempfile
+import sys, subprocess, tempfile
 
 def usage():
         print sys.argv[0], 'SOURCE TARGET\n'
