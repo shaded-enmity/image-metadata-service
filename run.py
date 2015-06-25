@@ -14,7 +14,6 @@ ap.add_argument('--confdir', '-c')
 ap.add_argument('SOURCE')
 ap.add_argument('TARGET')
 
-config = None
 confdir = 'conf/'
 args = ap.parse_args()
 if hasattr(args, 'confdir'):
@@ -22,9 +21,12 @@ if hasattr(args, 'confdir'):
 source = args.SOURCE
 repodatadir = args.TARGET
 
-cp = os.path.join(confdir, 'ims.json')
-with open(cp, 'r') as f:
-	config = json.load(f)
+def load_config(confdir):
+	cp = os.path.join(confdir, 'ims.json')
+	with open(cp, 'r') as f:
+		return json.load(f)
+
+cfg = load_config(confdir)
 
 # Add parameters:
 #
