@@ -7,9 +7,9 @@ checker = struct.Struct("<Q")
 checker_size = checker.size
 
 def usage():
-        print sys.argv[0], 'SOURCE TARGET\n'
-        print ' Scrape all image manifest files from SOURCE directory'
-        print ' and copy them to TARGET.'
+	print(os.path.basename(sys.argv[0]) + ' SOURCE TARGET\n')
+        print(' Scrape all image manifest files from SOURCE directory')
+        print(' and copy them to TARGET.')
         sys.exit(1)
 
 def check_is_manifest(path):

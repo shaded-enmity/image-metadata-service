@@ -7,7 +7,7 @@ filter_string = '{arch: .architecture, digest: "sha256:%s", tag: .tag, name: .na
                 ' + (.history[0].v1Compatibility | fromjson | { os: .os, created: .created, labels: .config.Labels })'
 
 def usage():
-        print(sys.argv[0], 'SOURCE TARGET\n')
+	print(os.path.basename(sys.argv[0]) + ' SOURCE TARGET\n')
         print(' Cache manifest metadata from SOURCE directory to TARGET')
         sys.exit(1)
 
@@ -48,5 +48,3 @@ pool = multiprocessing.Pool(32)
 manifest_map = filter(None, pool.map(filter_jq, paths))
 if not manifest_map:
         sys.exit(1)
-### template = '\n'
-### print(template.join(manifest_map))

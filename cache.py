@@ -3,7 +3,7 @@
 import sys, os, json, datetime
 
 def usage():
-        print(sys.argv[0], 'TARGET\n')
+	print(os.path.basename(sys.argv[0]) + ' TARGET\n')
         print(' Generate repodata.json from manifests stored at TARGET')
         sys.exit(1)
 
