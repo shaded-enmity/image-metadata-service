@@ -1,0 +1,11 @@
+{
+  "name_real": "Image Metadata Service ISV",
+  "name_email": "ims@isv.com",
+  "key_type": "RSA",
+  "key_length": 4096,
+  "key_usage": "",
+  "subkey_type": "RSA",
+  "subkey_length": "4096",
+  "subkey_usage": "auth,sign",
+  "passphrase": "6154c62482c5bfe82c25eb596dfc93d006f4e0aea8ecdd8a4ea2cfcd3155039b"
+}
