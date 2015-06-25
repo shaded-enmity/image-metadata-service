@@ -34,7 +34,7 @@ def find_fingerprint(g, fp):
 	return None
 
 def create_key(g, config):
-	key_input = g.gen_key_input(**key_config)
+	key_input = g.gen_key_input(**config)
 	k = g.gen_key(key_input)
 	if not k:
 		print('Unable to generate key')
