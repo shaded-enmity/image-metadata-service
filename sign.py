@@ -54,24 +54,24 @@ def ensure_fingerprint(g, config, fp):
 			f.write(key['fingerprint'])
 	return key['fingerprint']
 
-def sign_file(g, fl, fp):
+def sign_file(g, fl, fp, pp):
 	key = find_fingerprint(g, fp)
 
 	s = g.sign_file(
 		fl,
 		keyid=key['subkeys'][0][0],
-		passphrase=config['passphrase'],
+		passphrase=pp,
 		detach=True
 	)
 
 	return s
 
-def sign_file_path(g, path, fp, config):
+def sign_file_path(g, path, fp, pp):
 	signature = sign_file(
 		g,
 		open(path),
 		fp,
-		config
+		pp
 	)
 
 	sigpath = path + '.asc'
@@ -87,7 +87,7 @@ def verify_file_path(g, p):
 	)
 	return v
 
-fp = ensure_fingerprint(g, key_config, fp)
+fp = ensure_fingerprint(gpg, key_config, fp)
 for user in os.listdir(target):
 	upath = os.path.join(target, user)
 	for repo in os.listdir(upath):
@@ -98,7 +98,7 @@ for user in os.listdir(target):
 			gpg,
 			rpath,
 			fp,
-			key_config,
+			key_config['passphrase']
 		)
 		assert r
 		v = verify_file_path(
