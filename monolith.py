@@ -144,26 +144,6 @@ class GPGHelper(object):
                                 return k
                 return None
 
-        def create_key(self, key_config):
-                key_input = self.gpg.gen_key_input(**key_config)
-                k = self.gpg.gen_key(key_input)
-                if not k:
-                        raise Exception('Unable to generate key')
-
-                return k.fingerprint
-
-        def ensure_fingerprint(self, fp=None):
-                key = self.find_fingerprint(fp)
-                if not key:
-                        key = self.find_fingerprint(
-                                self.create_default_key()
-                        )
-                        assert key
-                        with open('key.fingerprint', 'w') as f:
-                                f.write(key['fingerprint'])
-                return key['fingerprint']
-
-
 class CacheSigner(object):
         def __init__(self, caches, gpg_config):
                 self.caches = caches
@@ -262,7 +242,7 @@ def get_cli_configuration():
 
         if not GPGHelper.verify_config(args.gpg_config):
                 print('Bogus GPG configuration!')
-                print(' run config.py and try again')
+                print(' run crypto_setup.py and try again')
 
         return (args.source, args.target, args.gpg_config)
 
