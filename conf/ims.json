@@ -1,5 +1,5 @@
 {
-	"gpg_home_dir": "ims",
-	"gpg_key_fingeprint": "",
-	"gpg_key_config": "conf/key.json"
+	"gpg_homedir": "ims",
+	"gpg_fingeprint": "",
+	"gpg_passphrase": ""
 }
