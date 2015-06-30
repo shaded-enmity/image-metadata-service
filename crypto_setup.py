@@ -103,15 +103,15 @@ for i in Inputs:
         i.input()
 
 key_config = {
-  'name_real': kd.name,
-  'name_email': kd.email,
-  'key_type': kd.type,
-  'key_length': kd.length,
-  'key_usage': '',
-  'subkey_type': kd.type,
-  'subkey_length': kd.length,
-  'subkey_usage': 'auth,sign',
-  'passphrase': kd.passphrase
+  'name_real':      kd.name,
+  'name_email':     kd.email,
+  'key_type':       kd.type,
+  'key_length':     kd.length,
+  'key_usage':      '',
+  'subkey_type':    kd.type,
+  'subkey_length':  kd.length,
+  'subkey_usage':   'auth,sign',
+  'passphrase':     kd.passphrase
 }
 
 fingerprint = create_key(args.gpg_homedir, key_config)

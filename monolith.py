@@ -122,7 +122,7 @@ class GPGHelper(object):
         def __init__(self, gpg_config):
                 self.gpg = gnupg.GPG(gnupghome=gpg_config['gpg_homedir'])
                 self.passphrase = gpg_config['gpg_passphrase']
-                self.fingerprint = gpg_config['gpg_fingeprint']
+                self.fingerprint = gpg_config['gpg_fingerprint']
 
         @staticmethod
         def verify_config(gpg_config):
