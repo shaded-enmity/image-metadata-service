@@ -34,7 +34,7 @@ InputValidators = [
         lambda x: x.count('@') != 0
 ]               
 
-def objvar(kd, name):
+def varbind(kd, name):
         def prop(value=None):
                 if value:
                         setattr(kd, name, value)
@@ -92,35 +92,27 @@ class UserInput(object):
 
 kd = KeyData()
 Inputs = [
-        UserInput('Enter key name', objvar(kd, '_name'), InputType.TEXT),
-        UserInput('Enter email', objvar(kd, '_email'), InputType.EMAIL),
-        UserInput('Enter key type', objvar(kd, '_type'), InputType.TEXT),
-        UserInput('Enter key length', objvar(kd, '_length'), InputType.NUMBER),
-        UserInput('Enter key passphrase', objvar(kd, '_passphrase'), InputType.PASSWORD)
+        UserInput('Enter key name',        varbind(kd, '_name'),        InputType.TEXT),
+        UserInput('Enter email',           varbind(kd, '_email'),       InputType.EMAIL),
+        UserInput('Enter key type',        varbind(kd, '_type'),        InputType.TEXT),
+        UserInput('Enter key length',      varbind(kd, '_length'),      InputType.NUMBER),
+        UserInput('Enter key passphrase',  varbind(kd, '_passphrase'),  InputType.PASSWORD)
 ]
 
 for i in Inputs:
         i.input()
 
 key_config = {
-  'name_real': '',
-  'name_email': '',
-  'key_type': '',
-  'key_length': 0,
+  'name_real': kd.name,
+  'name_email': kd.email,
+  'key_type': kd.type,
+  'key_length': kd.length,
   'key_usage': '',
-  'subkey_type': '',
-  'subkey_length': 0,
+  'subkey_type': kd.type,
+  'subkey_length': kd.length,
   'subkey_usage': 'auth,sign',
-  'passphrase': ''
+  'passphrase': kd.passphrase
 }
-
-key_config['name_real'] = kd.name
-key_config['name_email'] = kd.email
-key_config['key_type'] = kd.type
-key_config['key_length'] = kd.length
-key_config['subkey_type'] = kd.type
-key_config['subkey_length'] = kd.length
-key_config['passphrase'] = kd.passphrase
 
 fingerprint = create_key(args.gpg_homedir, key_config)
 

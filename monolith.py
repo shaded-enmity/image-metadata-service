@@ -71,7 +71,7 @@ class ManifestFilter(object):
                 del data['name']
                 self.ensure_directory(subpath)
                 fullpath = os.path.join(self.dst_dir, subpath, bp)
-                with open(fullpath, 'w') as f:
+                with open(fullpath, 'w+') as f:
                         json.dump(data, f)
                 return fullpath
 
@@ -170,7 +170,7 @@ class CacheSigner(object):
                 )
 
                 sigpath = path + '.asc'
-                with open(sigpath, 'w') as f:
+                with open(sigpath, 'w+') as f:
                         f.write(str(signature))
                 
                 return signature
@@ -241,8 +241,9 @@ def get_cli_configuration():
                 args.gpg_config = json.load(cfg)
 
         if not GPGHelper.verify_config(args.gpg_config):
-                print('Bogus GPG configuration!')
+                print('Invalid GPG configuration!')
                 print(' run crypto_setup.py and try again')
+                sys.exit(1)
 
         return (args.source, args.target, args.gpg_config)
 
