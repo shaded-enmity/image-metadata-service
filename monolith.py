@@ -106,9 +106,13 @@ class ArtefactCacher(object):
                 artefacts = []
                 for owner in os.listdir(self.target):
                         fp = os.path.join(self.target, owner)
+                        if not os.path.isdir(fp):
+                                continue
 
                         for repo in os.listdir(fp):
                                 fe = os.path.join(fp, repo)
+                                if not os.path.isdir(fe):
+                                        continue
 
                                 collated = {
                                         'cached': str(datetime.datetime.utcnow()), 
