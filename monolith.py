@@ -193,6 +193,10 @@ class CacheSigner(object):
                 )
                 return v
 
+        def plant_pk(self, path):
+                with open(path, 'w+') as fp:
+                        fp.write(self.gpg.export_keys(self.helper.fingerprint))
+
         def process(self):
                 assert self.helper.fingerprint
 
@@ -252,7 +256,9 @@ class App(object):
                 shutil.rmtree(self.tmp_dir)
 
                 signed = signer.process()
+                signer.plant_pk(os.path.join(self.target, 'service.pub'))
                 indexer = Indexer(self.target)
+
                 return indexer.process()
 
 
