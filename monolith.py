@@ -8,6 +8,14 @@ def scraper(obj, path):
 def mfilter(obj, manifest):
         return obj.filter_manifest(manifest)
 
+def mkdirs(d):
+        try:
+                os.mkdir(d)
+        except OSError, e:
+                if e.errno != 17:
+                        raise
+                pass
+
 class ManifestScraper(object):
         signature = (7020586390490450555,)
         checker = struct.Struct("<Q")
@@ -58,10 +66,10 @@ class ManifestFilter(object):
                         l, _ = name.split('/', 1)
                         lroot = os.path.join(self.dst_dir, l)
                         if not os.path.exists(lroot):
-                                os.mkdir(lroot)
+                                mkdirs(lroot)
                 target = os.path.join(self.dst_dir, name)
                 if not os.path.exists(target):
-                        os.mkdir(target)
+                        mkdirs(target)
         
         def filter_manifest(self, target):
                 bp = os.path.basename(target)
