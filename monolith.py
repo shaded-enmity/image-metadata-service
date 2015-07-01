@@ -2,6 +2,8 @@
 
 import argparse, datetime, functools, gnupg, json, multiprocessing, os, shlex, shutil, struct, subprocess, sys, tempfile
 
+METADATA_SCHEMA_VERSION = 1
+
 def scraper(obj, path):
         return obj.handle_file(path)
 
@@ -110,8 +112,9 @@ class ArtefactCacher(object):
 
                                 collated = {
                                         'cached': str(datetime.datetime.utcnow()), 
-                                        'repository': owner+'/'+repo, 
-                                        'images': []
+                                        'repository': owner + '/' + repo, 
+                                        'images': [],
+                                        'version': METADATA_SCHEMA_VERSION
                                 }
 
                                 for entry in os.listdir(fe):
@@ -203,6 +206,22 @@ class CacheSigner(object):
                         v = self.verify_file_path(c)
                         assert v
 
+class Indexer(object):
+        def __init__(self, target):
+                self.target = target
+
+        def process(self):
+                HTML_COLLECTION = '''- {0} <br />'''
+                HTML_REPO = '''&nbsp; <a href="{0}">{1}</a> [ <a href="{0}.asc">sig</a> ]'''
+                data = ''
+
+                for col in os.listdir(self.target):
+                        data += (HTML_COLLECTION.format(col))
+                        for repo in os.listdir(os.path.join(self.target, col)):
+                                data += (HTML_REPO.format(os.path.join(col, repo, 'repodata.json'), repo))
+                with open(os.path.join(self.target, 'index.html'), 'w+') as fp:
+                        fp.write(data)
+
 class App(object):
         def __init__(self, source, target, conf):
                 self.source = source
@@ -232,7 +251,9 @@ class App(object):
 
                 shutil.rmtree(self.tmp_dir)
 
-                return signer.process()
+                signed = signer.process()
+                indexer = Indexer(self.target)
+                return indexer.process()
 
 
 def get_cli_configuration():
