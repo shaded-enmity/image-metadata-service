@@ -220,6 +220,8 @@ class Indexer(object):
                 data = ''
 
                 for col in os.listdir(self.target):
+                        if not os.path.isdir(os.path.join(self.target, col)):
+                                continue
                         data += (HTML_COLLECTION.format(col))
                         for repo in os.listdir(os.path.join(self.target, col)):
                                 data += (HTML_REPO.format(os.path.join(col, repo, 'repodata.json'), repo))
